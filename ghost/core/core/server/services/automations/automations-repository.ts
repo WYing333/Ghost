@@ -158,6 +158,7 @@ export type BrowseOptions = Readonly<{
 
 export type AutomationsRepository = {
   browse(options: BrowseOptions): Promise<Page<AutomationBrowseResult>>;
+  exists(id: string): Promise<boolean>;
   getById(id: string): Promise<Automation | null>;
   getAutomationActionLinks(
     automationId: string,
