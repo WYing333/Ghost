@@ -110,6 +110,17 @@ describe('public-jwk', function () {
         assert.deepEqual(jwk, fixture.jwk);
       });
 
+      it('derives the same kid from the public key', async function () {
+        const publicPem = crypto
+          .createPublicKey(fixture.pem)
+          .export({ type: 'pkcs1', format: 'pem' })
+          .toString();
+        const { kid, jwk } = await getPublicKeyInfo(publicPem);
+
+        assert.equal(kid, fixture.kid);
+        assert.deepEqual(jwk, fixture.jwk);
+      });
+
       it('exposes no private key parameters', async function () {
         const { jwk } = await getPublicKeyInfo(fixture.pem);
 
@@ -180,10 +191,6 @@ describe('public-jwk', function () {
       'empty string': '',
       'not a PEM': 'definitely-not-a-key',
       'truncated PEM': KEYS['PKCS#1'].pem.slice(0, 200),
-      'a public key': crypto
-        .createPublicKey(KEYS['PKCS#1'].pem)
-        .export({ type: 'pkcs1', format: 'pem' })
-        .toString(),
     };
 
     for (const [name, pem] of Object.entries(invalid)) {
