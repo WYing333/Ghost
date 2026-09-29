@@ -8,7 +8,7 @@ const moment = require('moment-timezone');
  * @param {string} [options.timezone='UTC'] - Timezone for date interpretation
  * @returns {{dateFrom: string|null, dateTo: string|null}} Processed dates in ISO format
  */
-function getDateBoundaries(options) {
+function resolveDateBoundaries(options) {
   const timezone = options.timezone || 'UTC';
   const dateFrom = options.date_from
     ? moment.tz(options.date_from, timezone).startOf('day').utc().toISOString()
@@ -36,6 +36,6 @@ function applyDateFilter(query, dateFrom, dateTo, dateColumn) {
 }
 
 module.exports = {
-  getDateBoundaries,
+  resolveDateBoundaries,
   applyDateFilter,
 };
