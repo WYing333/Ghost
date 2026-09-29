@@ -9,6 +9,9 @@ const moment = require('moment-timezone');
  * @returns {{dateFrom: string|null, dateTo: string|null}} Processed dates in ISO format
  */
 function getDateBoundaries(options) {
+    if (!options) {
+        options = {};
+    }
   const timezone = options.timezone || 'UTC';
   const dateFrom = options.date_from
     ? moment.tz(options.date_from, timezone).startOf('day').utc().toISOString()
