@@ -1,5 +1,6 @@
 const url = require('url');
 const spamPrevention = require('./api/spam-prevention');
+const shared = require('../index');
 
 /**
  * We set ignoreIP to false, because we tell brute-knex to use `req.ip`.
@@ -10,7 +11,7 @@ module.exports = {
    * block per route per ip
    */
   globalBlock(req, res, next) {
-    return spamPrevention.globalBlock().getMiddleware({
+    return shared.middleware.api.spamPrevention.globalBlock().getMiddleware({
       ignoreIP: false,
       key: function (_req, _res, _next) {
         _next(url.parse(_req.url).pathname);
