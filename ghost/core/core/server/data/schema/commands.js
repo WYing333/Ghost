@@ -264,11 +264,12 @@ function prefixIndexColumns(knex, columns, length) {
 async function addIndex(tableName, columns, transaction = db.knex, options = {}) {
   try {
     logging.info(`Adding index for '${columns}' in table '${tableName}'`);
+    const prefixLength = options ? options.length : undefined;
 
     return await transaction.schema.table(tableName, function (table) {
-      if (options.length && DatabaseInfo.isMySQL(transaction)) {
+      if (prefixLength && DatabaseInfo.isMySQL(transaction)) {
         table.index(
-          prefixIndexColumns(transaction, columns, options.length),
+          prefixIndexColumns(transaction, columns, prefixLength),
           defaultIndexName(tableName, columns),
         );
       } else {
